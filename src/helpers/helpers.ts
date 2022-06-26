@@ -1,4 +1,5 @@
-export const getTimeText = (time: number): string => {
+export const getTimeText = (_time: number): string => {
+  const time = _time * 1000 //convert to MS
   const dateDay = new Date(time).setHours(0, 0, 0, 0);
   const today = new Date().setHours(0, 0, 0, 0);
 

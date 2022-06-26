@@ -6,65 +6,25 @@ import { CommentDetails } from '../CommentDetails/CommentDetails'
 import { CommentConfirmation } from '../CommentConfirmation/CommentConfirmation'
 import { GenericMessage } from '../GenericMessage/GenericMessage'
 
-
 import { Message } from '../../types/data'
 import { colors } from '../../constants'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
-
+import { submitMessageAPICall, fetchAllMessagesCall } from '../../helpers/api'
 const Divider = GridItem
 const MessagesContainer = styled(GridItem)`
   overflow-x: scroll;
 `
 
-const messages: Array<Message> = [
-  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-  to:'somebody',
-    signature: 'dfsfddsfsafd',
-    time: Date.now(),
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  },
-  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-    to:'somebody',
-    signature: 'dfsfdewsafd',
-    time: Date.now() - 86400000,
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  },
-  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-    to:'somebody',
-    signature: 'dfsfdesafd',
-    time: Date.now(),
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  },
-  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-    to:'somebody',
-    signature: 'dfs3645fdsafd',
-    time: Date.now(),
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  },
-  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-    to:'somebody',
-    signature: 'dfsf3dsafd',
-    time: Date.now(),
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  },  {from: '0x29a73a7a2c3242af9f78dadffb361b361e044b6c',
-    to:'somebody',
-    signature: 'dfsftydsafd',
-    time: Date.now(),
-    cid: '32432',
-    text: 'Hey Ethereum bros, what is the up'
-  }
-]
-
-const submitMessageAPICall = () => Promise.resolve() //TODO update this
-
 //TODO if I have time, add a filter to the top where we can filter from
 const Main = () => {
+  const [allMessages, setMessages] = useState<Array<Message>>([])
+  useEffect(() => {
+    fetchAllMessagesCall().then(messages => {
+      setMessages(messages)
+    })
+  },[setMessages])
+
   const [shownMessage, setShowDetails] = useState<Message | null>(null)
   const showDetails = useCallback((m) => setShowDetails(m), [setShowDetails])
   const hideDetails = useCallback(() => setShowDetails(null), [setShowDetails])
@@ -90,7 +50,7 @@ const Main = () => {
       </GridItem>
     <Divider gridColumn={'1/4'} gridRow={'3/4'} style={{borderTop: `1px solid ${colors.border.regular}`}}/>
     <MessagesContainer gridColumn={'2/3'} gridRow={'4/5'} border={`1px solid ${colors.border.regular}`}>
-      {messages.map(m => (
+      {allMessages.map(m => (
         <Comment key={m.signature} message={m} showDetails={() => showDetails(m)}/>
       ))}
     </MessagesContainer>

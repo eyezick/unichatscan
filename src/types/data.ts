@@ -13,3 +13,19 @@ export interface DataEntry {
 }
 
 export type DataStructure = Array<DataEntry>
+
+
+/*
+initial JSON BELOW:
+
+{
+  "dataEntries": [
+    {
+      "hash": "initial",
+      "messages": []
+    }
+  ]
+}
+
+
+ */
